@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>org.infai.seits.sepl</groupId>
-            <artifactId>util-DateParser</artifactId>
+            <artifactId>util-dateparser</artifactId>
             <version>0.1</version>
         </dependency>
     </dependencies>
