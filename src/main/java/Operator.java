@@ -20,7 +20,7 @@ public class Operator {
 
     public static void main(String[] args) {
         Stream stream = new Stream();
-        OutlierDetection outlierDetection = new OutlierDetection(Integer.parseInt(System.getenv("SIGMA")));
+        OutlierDetection outlierDetection = new OutlierDetection();
         stream.start(outlierDetection);
     }
 }

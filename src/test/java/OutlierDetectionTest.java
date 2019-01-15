@@ -28,7 +28,7 @@ public class OutlierDetectionTest {
 
     @Test(expected = NullPointerException.class)
     public void testRun() throws IOException {
-        outlierDetection = new OutlierDetection(1);
+        outlierDetection = new OutlierDetection();
         Set<Message> messages = TestMessageProvider.getTestMesssagesSet();
         for (Message m : messages) {
             outlierDetection.config(m);

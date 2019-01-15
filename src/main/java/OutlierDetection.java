@@ -14,34 +14,44 @@
  * limitations under the License.
  */
 
+import org.infai.seits.sepl.operators.Helper;
 import org.infai.seits.sepl.operators.Message;
 import org.infai.seits.sepl.operators.OperatorInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class OutlierDetection implements OperatorInterface {
 
-    private double oldValue, newValue, diff, avg, stddev, sum;
-    private boolean firstRun = true;
-    private List<Double> diffs;
-    private long oldTime, newTime, timeDiff;
+
+    HashMap<String, OutlierDeviceWrapper> map;
     private int sigma;
 
-    public OutlierDetection(int sigma) {
-        super();
-        oldTime = 0;
-        diffs = new ArrayList<>();
-        this.sigma = sigma;
+    public OutlierDetection() {
+        sigma = Helper.getEnv("sigma", 3);
+        map = new HashMap<>();
     }
 
     @Override
     public void run(Message message) {
+        double newValue, oldValue, diff, avg, stddev, sum;
+        long oldTime, newTime, timeDiff;
+        List<Double> diffs;
+        OutlierDeviceWrapper odw;
         newValue = message.getInput("value").getValue();
         newTime = DateParser.parseDateMills(message.getInput("timestamp").getString());
-        if (firstRun) {
+        String deviceID = message.getInput("deviceID").getString();
+        if (!map.containsKey(deviceID)) {
             oldTime = newTime;
-            firstRun = false;
+            oldValue = 0;
+            diffs = new ArrayList<>();
+            odw = new OutlierDeviceWrapper();
+        }else{
+            odw = map.get(deviceID);
+            oldTime = odw.getTime();
+            diffs = odw.getDiffs();
+            oldValue = odw.getValue();
         }
         if ((timeDiff = newTime - oldTime) <= 0) {
             return; //Out of order or same timestamp. Skip this value and won't take it into consideration.
@@ -69,10 +79,16 @@ public class OutlierDetection implements OperatorInterface {
         if (sigmaCurrent > sigma || sigmaCurrent < (sigma * -1)) {
             message.output("sigma", sigmaCurrent);
         }
+
+        odw.setDiffs(diffs);
+        odw.setTime(newTime);
+        odw.setValue(newValue);
+        map.put(deviceID, odw);
     }
 
     @Override
     public void config(Message message) {
+        message.addInput("deviceID");
         message.addInput("timestammp");
         message.addInput("value");
     }
