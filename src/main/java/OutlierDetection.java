@@ -89,7 +89,7 @@ public class OutlierDetection implements OperatorInterface {
     @Override
     public void config(Message message) {
         message.addInput("deviceID");
-        message.addInput("timestammp");
+        message.addInput("timestamp");
         message.addInput("value");
     }
 }
