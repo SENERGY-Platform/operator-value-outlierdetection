@@ -63,11 +63,6 @@
             <version>0.1.1</version>
         </dependency>
         <dependency>
-            <groupId>org.infai.seits.sepl.operators</groupId>
-            <artifactId>analytics-TaxiTestMessageProvider</artifactId>
-            <version>0.1.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
@@ -90,7 +85,4 @@
             <version>0.1</version>
         </dependency>
     </dependencies>
-
 </project>
-
-
