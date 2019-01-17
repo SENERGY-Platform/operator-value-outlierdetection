@@ -36,6 +36,8 @@ public class TestMessageProvider {
                 .put("Mappings", new JSONArray()
                         .put(new JSONObject().put("Source", "value.reading.value").put("Dest", "value"))
                         .put(new JSONObject().put("Source", "value.reading.timestamp").put("Dest", "timestamp"))
+                        .put(new JSONObject().put("Source", "value.reading.outlier").put("Dest", "outlier"))
+                        .put(new JSONObject().put("Source", "value.reading.deviceID").put("Dest", "deviceID"))
                 ));
         return config;
     }

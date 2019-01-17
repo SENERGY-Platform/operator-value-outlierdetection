@@ -33,17 +33,10 @@ public class OutlierDetectionTest {
         for (Message m : messages) {
             outlierDetection.config(m);
             outlierDetection.run(m);
-            m.addInput("outlier");
-            try {
-                m.addInput("sigma");
-                m.getInput("sigma").getValue();
-                if (m.getInput("outlier").getString().equals("no")) {
-                    Assert.fail("Detected an outlier that should not be one.");
-                }
-            } catch (Exception e) {
-                if (m.getInput("outlier").getString().equals("yes")) {
-                    Assert.fail("Did not detected an outlier that should be one.");
-                }
+            if (m.getMessageString().contains("sigma") && m.getInput("outlier").getString().equals("no")) {
+                Assert.fail("Detected an outlier that should not be one.");
+            }else if(!m.getMessageString().contains("sigma") && m.getInput("outlier").getString().equals("yes")){
+                Assert.fail("Did not detected an outlier that should be one.");
             }
         }
     }
