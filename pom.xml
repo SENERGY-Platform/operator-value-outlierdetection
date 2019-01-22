@@ -66,9 +66,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.SmartEnergyPlatform</groupId>
+            <groupId>com.github.SENERGY-Platform</groupId>
             <artifactId>analytics-operator-lib</artifactId>
-            <version>0.1.1</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.SENERGY-Platform</groupId>
