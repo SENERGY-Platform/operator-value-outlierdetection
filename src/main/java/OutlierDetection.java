@@ -43,10 +43,14 @@ public class OutlierDetection implements OperatorInterface {
         newTime = DateParser.parseDateMills(message.getInput("timestamp").getString());
         String deviceID = message.getInput("deviceID").getString();
         if (!map.containsKey(deviceID)) {
-            oldTime = newTime;
-            oldValue = 0;
+            //Setup first item
             diffs = new ArrayList<>();
             odw = new OutlierDeviceWrapper();
+            odw.setDiffs(diffs);
+            odw.setTime(newTime);
+            odw.setValue(newValue);
+            map.put(deviceID, odw);
+            return;
         }else{
             odw = map.get(deviceID);
             oldTime = odw.getTime();
