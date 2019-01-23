@@ -19,23 +19,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 
 public class OutlierDetectionTest {
 
     static OutlierDetection outlierDetection;
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testRun() throws IOException {
         outlierDetection = new OutlierDetection();
-        Set<Message> messages = TestMessageProvider.getTestMesssagesSet();
+        List<Message> messages = TestMessageProvider.getTestMesssagesSet();
         for (Message m : messages) {
             outlierDetection.config(m);
             outlierDetection.run(m);
-            if (m.getMessageString().contains("sigma") && m.getInput("outlier").getString().equals("no")) {
+            m.addInput("outlier");
+            String outlier = m.getInput("outlier").getString();
+            if (m.getMessageString().contains("sigma") && outlier.equals("no")) {
                 Assert.fail("Detected an outlier that should not be one.");
-            }else if(!m.getMessageString().contains("sigma") && m.getInput("outlier").getString().equals("yes")){
+            }else if(!m.getMessageString().contains("sigma") && outlier.equals("yes")){
                 Assert.fail("Did not detected an outlier that should be one.");
             }
         }

@@ -6,15 +6,15 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestMessageProvider {
 
-    public static Set<Message> getTestMesssagesSet() throws IOException {
+    public static List<Message> getTestMesssagesSet() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("src/test/resources/sample-data-small.json"));
         Builder builder = new Builder("1", "1");
-        Set<Message> messageSet = new HashSet();
+        List<Message> messageSet = new ArrayList<>();
         JSONArray config = getConfig();
         String line;
         Message m;
