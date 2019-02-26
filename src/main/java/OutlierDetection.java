@@ -18,9 +18,7 @@ import org.infai.seits.sepl.operators.Helper;
 import org.infai.seits.sepl.operators.Message;
 import org.infai.seits.sepl.operators.OperatorInterface;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class OutlierDetection implements OperatorInterface {
 
@@ -37,16 +35,14 @@ public class OutlierDetection implements OperatorInterface {
     public void run(Message message) {
         double newValue, oldValue, diff, avg, stddev, sum;
         long oldTime, newTime, timeDiff;
-        List<Double> diffs;
         OutlierDeviceWrapper odw;
         newValue = message.getInput("value").getValue();
         newTime = DateParser.parseDateMills(message.getInput("timestamp").getString());
         String deviceID = message.getInput("deviceID").getString();
+        Welford welford;
         if (!map.containsKey(deviceID)) {
             //Setup first item
-            diffs = new ArrayList<>();
             odw = new OutlierDeviceWrapper();
-            odw.setDiffs(diffs);
             odw.setTime(newTime);
             odw.setValue(newValue);
             map.put(deviceID, odw);
@@ -54,37 +50,21 @@ public class OutlierDetection implements OperatorInterface {
         }else{
             odw = map.get(deviceID);
             oldTime = odw.getTime();
-            diffs = odw.getDiffs();
             oldValue = odw.getValue();
+            welford = odw.getWelford();
         }
         if ((timeDiff = newTime - oldTime) <= 0) {
             return; //Out of order or same timestamp. Skip this value and won't take it into consideration.
         }
         diff = (newValue - oldValue) / ((double) timeDiff);
-        diffs.add(diff);
-
-        //Compute average
-        sum = 0.0;
-        for (Double d : diffs) {
-            sum += d;
-        }
-        avg = sum / diffs.size();
-
-        //Compute stddev
-        sum = 0.0;
-        for (Double d : diffs) {
-            sum += (d - avg) * (d - avg);
-        }
-        sum /= diffs.size();
-        stddev = Math.sqrt(sum);
+        welford.update(diff);
 
         //Check for outlier
-        double sigmaCurrent = (diff - avg) / stddev;
+        double sigmaCurrent = (diff - welford.mean()) / welford.std();
         if (sigmaCurrent > sigma || sigmaCurrent < (sigma * -1)) {
             message.output("sigma", sigmaCurrent);
         }
 
-        odw.setDiffs(diffs);
         odw.setTime(newTime);
         odw.setValue(newValue);
         map.put(deviceID, odw);

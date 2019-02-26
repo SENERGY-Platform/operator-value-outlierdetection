@@ -1,10 +1,11 @@
-import java.util.List;
-
 public class OutlierDeviceWrapper {
     private long time;
     private double value;
-    private List<Double> diffs;
+    private Welford welford;
 
+    public OutlierDeviceWrapper(){
+        welford = new Welford();
+    }
 
     public long getTime() {
         return time;
@@ -22,11 +23,12 @@ public class OutlierDeviceWrapper {
         this.value = value;
     }
 
-    public List<Double> getDiffs() {
-        return diffs;
+
+    public Welford getWelford() {
+        return welford;
     }
 
-    public void setDiffs(List<Double> diffs) {
-        this.diffs = diffs;
+    public void setWelford(Welford welford) {
+        this.welford = welford;
     }
 }
