@@ -33,7 +33,7 @@ public class OutlierDetection implements OperatorInterface {
 
     @Override
     public void run(Message message) {
-        double newValue, oldValue, diff, avg, stddev, sum;
+        double newValue, oldValue, diff;
         long oldTime, newTime, timeDiff;
         OutlierDeviceWrapper odw;
         newValue = message.getInput("value").getValue();
