@@ -3,10 +3,6 @@ public class OutlierDeviceWrapper {
     private double value;
     private Welford welford;
 
-    public OutlierDeviceWrapper(){
-        welford = new Welford();
-    }
-
     public long getTime() {
         return time;
     }

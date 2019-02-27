@@ -43,6 +43,7 @@ public class OutlierDetection implements OperatorInterface {
         if (!map.containsKey(deviceID)) {
             //Setup first item
             odw = new OutlierDeviceWrapper();
+            odw.setWelford(new Welford());
             odw.setTime(newTime);
             odw.setValue(newValue);
             map.put(deviceID, odw);
