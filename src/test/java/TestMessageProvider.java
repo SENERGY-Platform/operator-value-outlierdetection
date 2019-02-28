@@ -15,7 +15,7 @@ public class TestMessageProvider {
         BufferedReader br = new BufferedReader(new FileReader("src/test/resources/sample-data-small.json"));
         Builder builder = new Builder("1", "1");
         List<Message> messageSet = new ArrayList<>();
-        JSONArray config = getConfig();
+        JSONObject config = getConfig();
         String line;
         Message m;
         JSONObject jsonObjectRead, jsonObject;
@@ -29,8 +29,8 @@ public class TestMessageProvider {
         return messageSet;
     }
 
-    private static JSONArray getConfig() {
-        JSONArray config = new JSONArray().put(new JSONObject().put("Name", "test")
+    private static JSONObject getConfig() {
+        JSONObject config = new JSONObject().put("inputTopics",new JSONArray().put(new JSONObject().put("Name", "test")
                 .put("FilterType", "DeviceId")
                 .put("FilterValue", "1")
                 .put("Mappings", new JSONArray()
@@ -38,7 +38,7 @@ public class TestMessageProvider {
                         .put(new JSONObject().put("Source", "value.reading.timestamp").put("Dest", "timestamp"))
                         .put(new JSONObject().put("Source", "value.reading.outlier").put("Dest", "outlier"))
                         .put(new JSONObject().put("Source", "value.reading.deviceID").put("Dest", "deviceID"))
-                ));
+                )));
         return config;
     }
 }
