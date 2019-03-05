@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.infai.seits.sepl.operators.Config;
 import org.infai.seits.sepl.operators.Helper;
 import org.infai.seits.sepl.operators.Message;
 import org.infai.seits.sepl.operators.OperatorInterface;
@@ -25,9 +26,19 @@ public class OutlierDetection implements OperatorInterface {
 
     HashMap<String, OutlierDeviceWrapper> map;
     private int sigma;
+    private boolean debug;
 
     public OutlierDetection() {
-        sigma = Helper.getEnv("sigma", 3);
+        try{
+            sigma = Integer.parseInt(new Config().getConfigValue("SIGMA", "3"));
+            debug = Boolean.parseBoolean(Helper.getEnv("DEBUG", "false"));
+            if(debug)
+                System.out.println("Set SIGMA to "+sigma);
+        }catch(NumberFormatException nfe){
+            System.err.println("Environment variable SIGMA is expected to be an integer, but is none");
+            System.err.println(nfe.getMessage());
+            sigma = 3;
+        }
         map = new HashMap<>();
     }
 
