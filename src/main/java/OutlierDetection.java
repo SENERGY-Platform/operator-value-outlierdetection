@@ -49,7 +49,7 @@ public class OutlierDetection implements OperatorInterface {
         OutlierDeviceWrapper odw;
         newValue = message.getInput("value").getValue();
         newTime = DateParser.parseDateMills(message.getInput("timestamp").getString());
-        String deviceID = message.getInput("deviceID").getString();
+        String deviceID = message.getInput("device").getString();
         Welford welford;
         if (!map.containsKey(deviceID)) {
             //Setup first item
@@ -84,7 +84,7 @@ public class OutlierDetection implements OperatorInterface {
 
     @Override
     public void config(Message message) {
-        message.addInput("deviceID");
+        message.addInput("device");
         message.addInput("timestamp");
         message.addInput("value");
     }

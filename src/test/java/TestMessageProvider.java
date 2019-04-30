@@ -37,7 +37,7 @@ public class TestMessageProvider {
                         .put(new JSONObject().put("Source", "value.reading.value").put("Dest", "value"))
                         .put(new JSONObject().put("Source", "value.reading.timestamp").put("Dest", "timestamp"))
                         .put(new JSONObject().put("Source", "value.reading.outlier").put("Dest", "outlier"))
-                        .put(new JSONObject().put("Source", "value.reading.deviceID").put("Dest", "deviceID"))
+                        .put(new JSONObject().put("Source", "value.reading.device").put("Dest", "device"))
                 )));
         return config;
     }
