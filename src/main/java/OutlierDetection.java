@@ -75,6 +75,8 @@ public class OutlierDetection implements OperatorInterface {
         double sigmaCurrent = (diff - welford.mean()) / welford.std();
         if (sigmaCurrent > sigma || sigmaCurrent < (sigma * -1)) {
             message.output("sigma", sigmaCurrent);
+            message.output("timestamp", message.getInput("timestamp").getString());
+            message.output("device", message.getInput("device").getString());
         }
 
         odw.setTime(newTime);
